@@ -1,6 +1,6 @@
 {
   "name": "intl-gen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/intl-gen.js",
   "types": "./dist/intl-gen.d.ts",
   "scripts": {
