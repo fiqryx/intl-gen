@@ -25,5 +25,9 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fiqry919/intl-gen.git"
   }
 }
