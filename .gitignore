@@ -1,0 +1,15 @@
+/node_modules
+/.vscode
+/dist
+/build
+package-lock.json
+
+# locales
+locales/*
+!locales/en-US/
+!locales/languages.json
+
+# misc
+l10n/*
+locales_flutter/*
+*.arb

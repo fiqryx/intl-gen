@@ -1,0 +1,29 @@
+{
+  "name": "intl-gen",
+  "version": "1.0.0",
+  "main": "./dist/intl-gen.js",
+  "types": "./dist/intl-gen.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "ts-node ./src/test/index.ts",
+    "release:patch": "npm run build && git add . && git commit && npm version patch",
+    "release:minor": "npm run build && git add . && git commit && npm version minor",
+    "release:major": "npm run build && git add . && git commit && npm version major"
+  },
+  "keywords": [
+    "i18n",
+    "translation",
+    "translation-generator",
+    "internationalization"
+  ],
+  "author": "",
+  "license": "MIT",
+  "description": "language translation",
+  "dependencies": {
+    "@iamtraction/google-translate": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12"
+  }
+}

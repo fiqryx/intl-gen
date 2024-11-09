@@ -1,0 +1,7 @@
+/.vscode
+/node_modules
+/locales
+/l10n
+/test
+/src
+tsconfig.json
