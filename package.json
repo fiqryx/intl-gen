@@ -1,6 +1,6 @@
 {
   "name": "intl-gen",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "./dist/intl-gen.js",
   "types": "./dist/intl-gen.d.ts",
   "scripts": {
@@ -28,6 +28,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Fiqry919/intl-gen.git"
+    "url": "git+https://github.com/Fiqry919/intl-gen.git"
   }
 }
