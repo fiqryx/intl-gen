@@ -35,6 +35,7 @@ export interface Options {
     auto_override?: boolean
     /**
      * skip translate region language
+     * language code must be have region like `en_US`
      */
     skip_region?: boolean
     /**
@@ -43,12 +44,22 @@ export interface Options {
     exclude?: string[]
     /**
      * customize result name
+     * @deprecated
      */
     customResult?: ResultCallback
     /**
+     * override output filename
+     */
+    override_output?: ResultCallback
+    /**
      * without generate subdir
+     * @deprecated
      */
     withoutSubdir?: boolean
+    /**
+     * organize directories by language code
+     */
+    locale_directory?: boolean
 }
 
 export interface Encode {

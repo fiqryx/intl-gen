@@ -37,10 +37,10 @@ const options: Options = {
   filename: 'translation.json', // Name of the translation file
   default_language: 'en', // Default language code
   auto_override: true, // Override existing translations
-  skip_region: false, // Don't skip regional variants
+  skip_region: false, // Skip regional variants, when a language code have region like `en_US`
   exclude: ['zh'], // Exclude Chinese language
-  customResult: (code) => `translation_${code}.json`, // Customize output filename
-  withoutSubdir: false, // Organize by language subdirectories
+  override_output: (code) => `translation_${code}.json`, // Override output filename
+  locale_directory: true, // Organize directories by language code
 };
 ```
 
@@ -65,8 +65,8 @@ The Options interface includes the following fields:
 - auto_override (boolean, optional): If true, overrides existing translations.
 - skip_region (boolean, optional): If true, skips region-based translations.
 - exclude (string[], optional): Array of language codes to exclude from translation.
-- customResult (ResultCallback, optional): Function to customize output filenames.
-- withoutSubdir (boolean, optional): If true, outputs files directly to the main directory without subdirectories.
+- override_output (ResultCallback, optional): Function to override output filenames.
+- locale_directory (boolean, optional): If true, outputs files directly by language directory.
 
 ## Example
 

@@ -19,7 +19,7 @@ class IntlGen {
 
     constructor(private op: Options) {
         this.directory = path.join(process.cwd(), ...op.directory)
-        if (this.op.withoutSubdir) {
+        if (this.op.withoutSubdir || !this.op.locale_directory) {
             this.filepath = path.join(this.directory, op.filename)
         } else {
             this.filepath = path.join(this.directory, op.default_language, op.filename)
@@ -42,6 +42,10 @@ class IntlGen {
                     let filename = this.op.filename;
                     if (this.op.customResult) {
                         filename = this.op.customResult(v.code);
+                    }
+
+                    if (this.op.override_output) {
+                        filename = this.op.override_output(v.code);
                     }
 
                     let directory = this.directory;
