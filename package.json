@@ -1,6 +1,6 @@
 {
   "name": "intl-gen",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "./dist/intl-gen.js",
   "types": "./dist/intl-gen.d.ts",
   "scripts": {
@@ -18,7 +18,7 @@
     "translation-generator",
     "internationalization"
   ],
-  "author": "",
+  "author": "fiqryx",
   "license": "MIT",
   "description": "language translation",
   "dependencies": {
