@@ -1,8 +1,8 @@
 {
   "name": "intl-gen",
   "version": "1.2.0",
-  "main": "./dist/intl-gen.js",
-  "types": "./dist/intl-gen.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "bin": "./dist/cli.js",
   "scripts": {
     "build": "tsc",

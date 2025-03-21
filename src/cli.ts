@@ -1,29 +1,14 @@
 #!/usr/bin/env node
 import fs from 'fs';
 import path from 'path'
-import chalk from 'chalk';
-import IntlGen from './intl-gen';
+import { Intl } from './index';
 import { Command } from "commander"
+import { logger } from './logger';
 import { pathToFileURL } from 'url';
 import { version } from '../package.json'
 
 process.on("SIGINT", () => process.exit(0))
 process.on("SIGTERM", () => process.exit(0))
-
-const logger = {
-    error(...args: unknown[]) {
-        console.log(chalk.red(...args))
-    },
-    warn(...args: unknown[]) {
-        console.log(chalk.yellow(...args))
-    },
-    info(...args: unknown[]) {
-        console.log(chalk.cyan(...args))
-    },
-    success(...args: unknown[]) {
-        console.log(chalk.green(...args))
-    },
-}
 
 async function main() {
     const program = new Command()
@@ -73,8 +58,8 @@ async function main() {
             sources = require(configPath);
         }
 
-        const intl = new IntlGen(sources.default ?? sources.config);
-        await intl.run();
+        const intl = new Intl(sources.default ?? sources.config);
+        await intl.generate();
     } catch (err) {
         logger.error("Failed to load config file:", err);
     }

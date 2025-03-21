@@ -1,13 +1,11 @@
+/** @type {import('./src/index').Options} */
 export const config = {
-    languages: [
-        { code: 'en' },
-        { code: 'id' },
-    ],
+    ext: 'json',
+    filename: 'translation',
     directory: ['locales'],
-    filename: 'translation.json',
-    default_language: 'en',
-    auto_override: true,
-    skip_region: true,
-    withoutSubdir: true,
-    customResult: (code) => `translation_${code}.json`,
+    languages: ['en-US', 'id-ID'],
+    baseLanguage: 'en-US',
+    ignoreExists: true,
+    enableSubdirectory: true,
+    override: (code) => `translation_${code}`,
 }

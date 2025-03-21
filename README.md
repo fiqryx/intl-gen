@@ -28,65 +28,22 @@
 1. Create config file `intl.config.mjs`
 
     ```js
-    import { Options } from 'intl-gen';
-
-    const config: Options = {
-      directory: ['locales'], // Base directory for language files
-      languages: [
-        { code: 'es' },
-        { code: 'fr' },
-        // Add more languages as needed
-      ],
-      filename: 'translation.json', // Name of the translation file
-      default_language: 'en', // Default language code
-      auto_override: true, // Override existing translations
-      skip_region: false, // Skip regional variants, when a language code have region like `en_US`
-      exclude: ['zh'], // Exclude Chinese language
-      override_output: (code) => `translation_${code}.json`, // Override output filename
-      locale_directory: true, // Organize directories by language code
-    };
-
-    export default config;
+      /** @type {import('intl-gen').Options} */
+      export const config = {
+          ext: 'json',
+          filename: 'translation',
+          directory: ['locales'],
+          languages: ['en-US', 'id-ID'],
+          baseLanguage: 'en-US',
+          ignoreExists: true,
+          enableSubdirectory: true,
+          override: (code) => `translation_${code}`,
+      }
     ```
 
 2. Execute bash command
     ```bash
     npx intl-gen -c intl.config.mjs
-    ```
-
-# Usage inline code
-
-1. Import `IntlGen` and configure options:
-
-    ```ts
-    import IntlGen from 'intl-gen';
-    import { Options } from 'intl-gen';
-
-    const options: Options = {
-      directory: ['locales'], // Base directory for language files
-      languages: [
-        { code: 'es' },
-        { code: 'fr' },
-        // Add more languages as needed
-      ],
-      filename: 'translation.json', // Name of the translation file
-      default_language: 'en', // Default language code
-      auto_override: true, // Override existing translations
-      skip_region: false, // Skip regional variants, when a language code have region like `en_US`
-      exclude: ['zh'], // Exclude Chinese language
-      override_output: (code) => `translation_${code}.json`, // Override output filename
-      locale_directory: true, // Organize directories by language code
-    };
-    ```
-
-2. Initialize the IntlGen instance:
-    ```ts
-    const intlGen = new IntlGen(options);
-    ```
-
-3. Run the translation:
-    ```ts
-    intlGen.run();
     ```
 
 ### Options Configuration
@@ -136,85 +93,3 @@ The Options interface includes the following fields:
   ```
 
   `note:` It is recommended to check the results again, and correct them manually if they do not match.
-
-## How integrate on Next.js 
-
-1. Create file `intl-gen.ts` if use typescript or `intl-gen.js` on your `project-root` and write that
-    - Typescript
-
-      ```ts
-      import IntlGen from './IntlGen';
-
-      const intlGen = new IntlGen({
-        directory: ['locales'],
-        filename: 'translation.json',
-        default_language: 'en',
-        auto_override: true,
-        skip_region: false,
-        locale_directory: true,
-        languages: [
-          { code: 'es' },
-          { code: 'fr' },
-          // Add more languages as needed
-        ],
-      });
-
-      intlGen.run();
-      ```
-
-    - Javascript
-
-      ```js
-      const IntlGen = require('intl-gen').default
-
-
-      const intlGen = new IntlGen({
-        directory: ['locales'],
-        filename: 'translation.json',
-        default_language: 'en',
-        auto_override: true,
-        skip_region: false,
-        locale_directory: true,
-        languages: [
-          { code: 'es' },
-          { code: 'fr' },
-          // Add more languages as needed
-        ],
-      });
-
-      intlGen.run();
-      ```
-
-2. Create base `translation.json` on `locales/en/`
-
-    ```json
-    {
-      "hello": "Hello",
-      "welcome": "Welcome to our application!"
-    }
-    ```
-
-3. Edit `tsconfig.json` (skip that if not use typescript)
-    ```json
-    {
-      ....
-      "ts-node": {
-        "compilerOptions": {
-          "module": "CommonJS"
-        }
-      }
-    }
-    ```
-
-4. Execute on your terminal
-
-    - Typescript
-
-      ```bash
-      $ ts-node intl-gen.ts
-      ```
-
-    - Javascript
-      ```bash
-      $ node intl-gen.js
-      ```
