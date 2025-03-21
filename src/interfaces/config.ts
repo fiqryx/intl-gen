@@ -6,10 +6,6 @@ interface Language {
      * language code ISO 639-1:2002
      */
     code: string
-    /**
-     * language name
-     */
-    title: string
 }
 
 export interface Options {
