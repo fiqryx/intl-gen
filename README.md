@@ -7,15 +7,14 @@
 
 `IntlGen` is a utility that automates the process of translating language files for internationalization (i18n) in your application. It reads a default language file, translates it into multiple target languages, and outputs the translated files into the specified directory structure.
 
-## Features
+<!-- ## Features
 
 - **Automatic Translation**: Uses Google Translate API to translate language keys from the default language to other specified languages.
 - **Directory Management**: Supports organized file output into subdirectories based on language codes.
 - **Auto-Override**: Optionally overwrite existing translations for updating language files.
 - **Customizable Filenames**: Allows customization of filenames for translated output files.
 - **Regional Language Skipping**: Can skip regional language variants if desired.
-- **Error Handling**: Logs unsupported languages or any errors that occur during translation.
-- **Framework supports**: Next.js, soon...
+- **Error Handling**: Logs unsupported languages or any errors that occur during translation. -->
 
 
 ## Installation
@@ -24,19 +23,50 @@
    npm install intl-gen
    ```
 
-## Usage
+## CLI Usage
+
+1. Create config file `intl.config.mjs`
+
+    ```js
+    import { Options } from 'intl-gen';
+
+    const config: Options = {
+      directory: ['locales'], // Base directory for language files
+      languages: [
+        { code: 'es' },
+        { code: 'fr' },
+        // Add more languages as needed
+      ],
+      filename: 'translation.json', // Name of the translation file
+      default_language: 'en', // Default language code
+      auto_override: true, // Override existing translations
+      skip_region: false, // Skip regional variants, when a language code have region like `en_US`
+      exclude: ['zh'], // Exclude Chinese language
+      override_output: (code) => `translation_${code}.json`, // Override output filename
+      locale_directory: true, // Organize directories by language code
+    };
+
+    export default config;
+    ```
+
+2. Execute bash command
+    ```bash
+    npx intl-gen -c intl.config.mjs
+    ```
+
+# Usage inline code
 
 1. Import `IntlGen` and configure options:
 
     ```ts
-    import IntlGen from './IntlGen';
-    import { Options } from './interfaces/config';
+    import IntlGen from 'intl-gen';
+    import { Options } from 'intl-gen';
 
     const options: Options = {
       directory: ['locales'], // Base directory for language files
       languages: [
-        { code: 'es', title: 'Spanish' },
-        { code: 'fr', title: 'French' },
+        { code: 'es' },
+        { code: 'fr' },
         // Add more languages as needed
       ],
       filename: 'translation.json', // Name of the translation file
@@ -123,8 +153,8 @@ The Options interface includes the following fields:
         skip_region: false,
         locale_directory: true,
         languages: [
-          { code: 'es', title: 'Spanish' },
-          { code: 'fr', title: 'French' },
+          { code: 'es' },
+          { code: 'fr' },
           // Add more languages as needed
         ],
       });
@@ -146,8 +176,8 @@ The Options interface includes the following fields:
         skip_region: false,
         locale_directory: true,
         languages: [
-          { code: 'es', title: 'Spanish' },
-          { code: 'fr', title: 'French' },
+          { code: 'es' },
+          { code: 'fr' },
           // Add more languages as needed
         ],
       });

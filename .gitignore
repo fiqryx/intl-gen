@@ -13,3 +13,4 @@ locales/*
 l10n/*
 locales_flutter/*
 *.arb
+# *.config.*

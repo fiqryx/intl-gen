@@ -158,3 +158,7 @@ class IntlGen {
 }
 
 export default IntlGen
+
+export {
+    Options
+}
