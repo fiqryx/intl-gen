@@ -1,8 +1,9 @@
 {
   "name": "intl-gen",
-  "version": "1.1.2",
-  "main": "./dist/intl-gen.js",
-  "types": "./dist/intl-gen.d.ts",
+  "version": "1.3.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": "./dist/cli.js",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,11 +19,17 @@
     "translation-generator",
     "internationalization"
   ],
-  "author": "fiqryx",
+  "author": {
+    "name": "fiqry919",
+    "url": "https://github.com/Fiqry919"
+  },
   "license": "MIT",
   "description": "language translation",
   "dependencies": {
-    "@iamtraction/google-translate": "^2.0.1"
+    "@iamtraction/google-translate": "^2.0.1",
+    "chalk": "^4.1.2",
+    "commander": "^13.1.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/node": "^20.12.12"
