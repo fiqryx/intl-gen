@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import translate from "@iamtraction/google-translate"
 import { logger } from './logger'
+import ora from 'ora'
 
 export interface Options<T extends string = string> {
     /**
@@ -106,7 +107,7 @@ export class Intl {
                         }
                     }
 
-                    logger.info(`Translating: ${v}`);
+                    // logger.info(`Start translating: ${v}`);
 
                     if (this.op.ignoreExists) {
                         try {
@@ -114,9 +115,11 @@ export class Intl {
                                 fs.readFileSync(path.join(directory, filename), { encoding: 'utf-8' })
                             )
                         } catch (e) {
-                            logger.info(`Creating file ${filename}`);
+                            // logger.info(`Creating file ${filename}`);
                         }
                     }
+
+                    const loading = ora(`Translating ${v}`).start();
 
                     this.country = false;
                     let unsupport = false;
@@ -145,6 +148,8 @@ export class Intl {
                             delete current_object[key]
                         }
                     }
+
+                    loading.succeed(`Translated done ${v}`);
 
                     if (Object.keys(current_object).length) {
                         fs.writeFileSync(path.join(directory, filename), JSON.stringify(current_object), {
