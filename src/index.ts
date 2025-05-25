@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import translate from "@iamtraction/google-translate"
 import { logger } from './logger'
-import ora from 'ora'
 
 export interface Options<T extends string = string> {
     /**
@@ -119,7 +118,7 @@ export class Intl {
                         }
                     }
 
-                    const loading = ora(`Translating ${v}`).start();
+                    const loading = logger.spinner(`Translating ${v}`).start();
 
                     this.country = false;
                     let unsupport = false;
