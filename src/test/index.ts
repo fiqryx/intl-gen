@@ -1,25 +1,26 @@
-import IntlGen from "../intl-gen";
+import { Intl } from '../index';
 
 // json locales generator
-const json_generator = new IntlGen({
-    languages: require('../../locales/languages.json'),
+const json_generator = new Intl({
+    ext: 'json',
+    filename: 'translation',
     directory: ['locales'],
-    filename: 'translation.json',
-    default_language: 'en-US',
-    auto_override: true,
-    skip_region: true
+    languages: ['en-US', 'id-ID', 'ar-BH', 'fr-FR', 'ja-JP'],
+    baseLanguage: 'en-US',
+    ignoreExists: true,
+    enableSubdirectory: true,
+    override: (code) => `translation_${code}`,
 });
-// json_generator.run();
+json_generator.generate();
 
 // arb locales generator
-const arb_generator = new IntlGen({
-    languages: require('../../l10n/languages.json'),
-    filename: 'intl_en.arb',
-    default_language: 'en',
-    directory: ['l10n'],
-    auto_override: true,
-    skip_region: true,
-    withoutSubdir: true,
-    customResult: (code) => `intl_${code}.arb`,
-});
-// arb_generator.run();
+// const arb_generator = new Intl({
+//     ext: 'arb',
+//     filename: 'translation',
+//     directory: ['locales'],
+//     languages: ['en-US', 'id-ID'],
+//     baseLanguage: 'en-US',
+//     enableSubdirectory: true,
+//     override: (code) => `translation_${code}`,
+// });
+// arb_generator.generate();

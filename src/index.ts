@@ -28,7 +28,7 @@ export interface Options<T extends string = string> {
     /**
      * ignore translate when key is already exists
      */
-    ignoreExists?: string
+    ignoreExists?: boolean
     /**
      * exclude specifict languages
      */
