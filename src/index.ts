@@ -174,37 +174,49 @@ export class Intl {
      * Replace placeholders in a string.
      * Supports both {{}} and {} formats.
      */
-    private replace(str: string, replace: any) {
-        let placeholder = "";
-        str = str.replace(/{{(.*?)}}|\{(.*?)\}/g, (match) => {
-            placeholder = match;
+    private replace(str: string, replace: string) {
+        const placeholders: string[] = [];
+
+        const modifiedStr = str.replace(/{{(.*?)}}|\{(.*?)\}/g, (match) => {
+            placeholders.push(match);
             return replace;
         });
-        return [placeholder, str];
+
+        return { placeholders, modifiedStr };
     }
 
     /**
      * encode words to target language
      */
     private async encode({ word, to, error }: Encode) {
-        const [placeholder, replaced_word] = this.replace(word, "{{}}")
-        const result = async (index: number) => {
-            const res = await translate(replaced_word, {
-                from: this.op.baseLanguage.split('-')[0].toLowerCase(),
-                to: to.split('-')[index].toLowerCase()
-            })
-            return res.text.replace("{{}}", placeholder)
-        }
+        // Replace all placeholders with temporary markers
+        const { placeholders, modifiedStr: textToTranslate } = this.replace(word, '[[]]');
+
+        const translateToLanguage = async (regionIndex: number): Promise<string> => {
+            const targetLang = to.split('-')[regionIndex].toLowerCase();
+            const sourceLang = this.op.baseLanguage.split('-')[0].toLowerCase();
+
+            const translation = await translate(textToTranslate, {
+                from: sourceLang,
+                to: targetLang
+            });
+
+            // Restore placeholders one by one
+            return placeholders.reduce((result, placeholder) =>
+                result.replace('[[]]', placeholder),
+                translation.text
+            );
+        };
 
         try {
             if (this.op.skipRegion) throw "skip region";
-            return await result(1)
+            return await translateToLanguage(1)
         } catch (e) {
             try {
                 if (!this.country && !this.op.skipRegion) {
                     this.country = true;
                 }
-                return await result(0);
+                return await translateToLanguage(0);
             } catch (e) {
                 error()
             }
