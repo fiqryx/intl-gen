@@ -49,6 +49,11 @@ export interface Options<T extends string = string> {
      * language code must be have region like `en_US`
      */
     skipRegion?: boolean
+    /**
+     * customize temporary placeholder replacement
+     * @default 'double-bracket': [[]]
+     */
+    placeholder?: string
 }
 
 interface Encode {
@@ -106,16 +111,12 @@ export class Intl {
                         }
                     }
 
-                    // logger.info(`Start translating: ${v}`);
-
                     if (this.op.ignoreExists) {
                         try {
                             current_object = JSON.parse(
                                 fs.readFileSync(path.join(directory, filename), { encoding: 'utf-8' })
                             )
-                        } catch (e) {
-                            // logger.info(`Creating file ${filename}`);
-                        }
+                        } catch (e) { /* ignore error */ }
                     }
 
                     const loading = logger.spinner(`Translating ${v}`).start();
@@ -189,8 +190,8 @@ export class Intl {
      * encode words to target language
      */
     private async encode({ word, to, error }: Encode) {
-        // Replace all placeholders with temporary markers
-        const { placeholders, modifiedStr: textToTranslate } = this.replace(word, '[[]]');
+        const temp = this.op.placeholder || '[[]]'
+        const { placeholders, modifiedStr: textToTranslate } = this.replace(word, temp);
 
         const translateToLanguage = async (regionIndex: number): Promise<string> => {
             const targetLang = to.split('-')[regionIndex].toLowerCase();
@@ -203,7 +204,7 @@ export class Intl {
 
             // Restore placeholders one by one
             return placeholders.reduce((result, placeholder) =>
-                result.replace('[[]]', placeholder),
+                result.replace(temp, placeholder),
                 translation.text
             );
         };
