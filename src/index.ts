@@ -49,6 +49,11 @@ export interface Options<T extends string = string> {
      * language code must be have region like `en_US`
      */
     skipRegion?: boolean
+    /**
+     * customize temporary placeholder replacement
+     * @default 'double-bracket': [[]]
+     */
+    placeholder?: string
 }
 
 interface Encode {
@@ -106,16 +111,12 @@ export class Intl {
                         }
                     }
 
-                    // logger.info(`Start translating: ${v}`);
-
                     if (this.op.ignoreExists) {
                         try {
                             current_object = JSON.parse(
                                 fs.readFileSync(path.join(directory, filename), { encoding: 'utf-8' })
                             )
-                        } catch (e) {
-                            // logger.info(`Creating file ${filename}`);
-                        }
+                        } catch (e) { /* ignore error */ }
                     }
 
                     const loading = logger.spinner(`Translating ${v}`).start();
@@ -174,37 +175,49 @@ export class Intl {
      * Replace placeholders in a string.
      * Supports both {{}} and {} formats.
      */
-    private replace(str: string, replace: any) {
-        let placeholder = "";
-        str = str.replace(/{{(.*?)}}|\{(.*?)\}/g, (match) => {
-            placeholder = match;
+    private replace(str: string, replace: string) {
+        const placeholders: string[] = [];
+
+        const modifiedStr = str.replace(/{{(.*?)}}|\{(.*?)\}/g, (match) => {
+            placeholders.push(match);
             return replace;
         });
-        return [placeholder, str];
+
+        return { placeholders, modifiedStr };
     }
 
     /**
      * encode words to target language
      */
     private async encode({ word, to, error }: Encode) {
-        const [placeholder, replaced_word] = this.replace(word, "{{}}")
-        const result = async (index: number) => {
-            const res = await translate(replaced_word, {
-                from: this.op.baseLanguage.split('-')[0].toLowerCase(),
-                to: to.split('-')[index].toLowerCase()
-            })
-            return res.text.replace("{{}}", placeholder)
-        }
+        const temp = this.op.placeholder || '[[]]'
+        const { placeholders, modifiedStr: textToTranslate } = this.replace(word, temp);
+
+        const translateToLanguage = async (regionIndex: number): Promise<string> => {
+            const targetLang = to.split('-')[regionIndex].toLowerCase();
+            const sourceLang = this.op.baseLanguage.split('-')[0].toLowerCase();
+
+            const translation = await translate(textToTranslate, {
+                from: sourceLang,
+                to: targetLang
+            });
+
+            // Restore placeholders one by one
+            return placeholders.reduce((result, placeholder) =>
+                result.replace(temp, placeholder),
+                translation.text
+            );
+        };
 
         try {
             if (this.op.skipRegion) throw "skip region";
-            return await result(1)
+            return await translateToLanguage(1)
         } catch (e) {
             try {
                 if (!this.country && !this.op.skipRegion) {
                     this.country = true;
                 }
-                return await result(0);
+                return await translateToLanguage(0);
             } catch (e) {
                 error()
             }
